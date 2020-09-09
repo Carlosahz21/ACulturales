@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="{% static  'css/dashboard.css' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+</head>
+<body>
+	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">Actores Culturales</a>
+  <!-- <input id="myInput" class="form-control form-control-dark w-100" type="text" placeholder="Filtrar por Parroquia" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul> -->
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <!-- <a class="nav-link active" href="#">
+              <span data-feather="home"></span>
+               <span class="sr-only">(current)</span>
+               Datos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span data-feather="file"></span>
+              Agrupaciones
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="/reportes">
+              <span data-feather="layers"></span>
+              Reportes
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Datos</span>
+          <a class="d-flex align-items-center text-muted" aria-label="Add a new report">
+            <span data-feather="database"></span>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_parroquias' %}">
+              <span data-feather="file-text"></span>
+              Parroquias
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_categorias' %}">
+              <span data-feather="file-text"></span>
+              Categorías
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'listar_ambitos' %}">
+              <span data-feather="file-text"></span>
+              Ambito Cultural
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_agrupaciones' %}">
+              <span data-feather="file-text"></span>
+              Agrupaciones
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Categoría</h3>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <div>
+              <a class="btn btn-dark" href="{% url 'crear_ambito' %}">
+                <span data-feather="file-plus"></span> Insertar
+              </a>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive col-md-4 offset-md-4">
+        <table id="myTable" class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Acciones</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {%for ambito in object_list %}
+                    <tr>
+                        <td>{{ambito.nombre_ambito}}</td>
+                        <td class="d-flex">
+                          <a href="{% url 'editar_ambito' ambito.id_ambito %}" class="btn btn-sm btn btn-success">Editar</a>
+                          <a href="{% url 'eliminar_ambito' ambito.id_ambito %}" class="btn btn-sm btn btn-danger ml-2">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+        {% if page_obj.has_other_pages %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                {% endif %}
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </main>
+  </div>
+</div>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="{% static 'js/feather.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

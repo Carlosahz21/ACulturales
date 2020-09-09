@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="{% static  'css/dashboard.css' %}">	
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+<body>
+	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">Actores Culturales</a>
+  <input id="myInput" class="col-sm-6 col-md-8 form-control form-control-dark w-25" type="text" onkeyup="myFunction()" placeholder="Buscar por parroquia...">
+  <ul class="navbar-nav px-3">
+    <!-- <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>  -->
+  </ul>
+  </nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <!-- <a class="nav-link active" href="#">
+              <span data-feather="home"></span>
+               <span class="sr-only">(current)</span>
+               Datos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span data-feather="file"></span>
+              Agrupaciones
+            </a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link active" href="/reportes">
+              <span data-feather="layers"></span>
+              Reportes
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted collapse">
+          <span>Datos</span>
+          <a class="d-flex align-items-center text-muted" aria-label="Add a new report">
+            <span data-feather="database"></span>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_parroquias' %}">
+              <span data-feather="file-text"></span>
+              Parroquias
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_categorias' %}">
+              <span data-feather="file-text"></span>
+              Categorías
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_ambitos' %}">
+              <span data-feather="file-text"></span>
+              Ambito Cultural
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar_agrupaciones' %}">
+              <span data-feather="file-text"></span>
+              Agrupaciones
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" id=main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Reportes</h3>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <div>
+            <select class="custom-select" id="inputGroupSelect02">
+                    <option selected>Escoja...</option>
+                    {% for categoria in lista_categorias %}
+                    <option value="1">{{ categoria.nombre_categoria }}</option>
+                    {% endfor %}
+          </select>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table id="myTable" class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Parroquia</th>
+                    <th scope="col">Ambito</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Agrupacion</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Correo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for dato in lista_agrupaciones %}
+                    <tr>
+                        <td>{{dato.parroquia.nombre_parroquia}}</td>
+                        <td>{{dato.ambito.nombre_ambito}}</td>
+                        <td>{{dato.categoria.nombre_categoria}}</td>
+                        <td>{{dato.nombre_agrupacion}}</td>
+                        <td>{{dato.nombre_contacto}}</td>
+                        <td>{{dato.telefono_contacto}}</td>
+                        <td>{{dato.correo_agrupacion}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table> 
+            <div id="choose">
+            </div> 
+      </div>
+    </main>
+  </div>
+</div>
+<script language="javascript">
+    $(function() {
+        $('#choose').pagination({
+            items: 20,
+            itemsOnPage: 2,
+            cssStyle: 'light-theme',
+            onPageClick: function(pageNumber){test(pageNumber)}
+        });
+    });
+</script>
+<script src="{% static 'js/feather.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

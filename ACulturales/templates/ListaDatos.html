@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<title>Crear Parroquia</title>
+</head>
+<body>
+	<div class="container">
+			<table id="tabla" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Parroquia</th>
+                    <th scope="col">Ambito</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Agrupacion</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Correo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for dato in lista_agrupaciones %}
+                    <tr>
+                        <th scope="row">{{dato.id_agrupacion}}</th>
+                        <td>{{dato.parroquia.nombre_parroquia}}</td>
+                        <td>{{dato.ambito.nombre_ambito}}</td>
+                        <td>{{dato.categoria.nombre_categoria}}</td>
+                        <td>{{dato.nombre_agrupacion}}</td>
+                        <td>{{dato.nombre_contacto}}</td>
+                        <td>{{dato.telefono_contacto}}</td>
+                        <td>{{dato.correo_agrupacion}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+		</div>
+	<script>
+        $(document).ready(function() {
+            $('#tabla').DataTable( {
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                    "zeroRecords": "No se encontro",
+                    "info": "Pagina _PAGE_ de _PAGES_",
+                    "emptyTable":   "No data available in table",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search":         "Buscar:",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                }
+            } );
+        } );
+  </script>
+</body>
+</html>
