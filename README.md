@@ -1,2 +1,1 @@
-# ACulturales
-App Ambitos Culturales
+# App Ambitos Culturales
