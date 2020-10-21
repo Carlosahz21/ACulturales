@@ -22,6 +22,10 @@ a:hover {
 .image{
   width: 63%; height: 50%;
 }
+
+.image1{
+  width: 50 %; height: 50%;
+}
 /*
  * Base structure
  */

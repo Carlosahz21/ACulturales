@@ -1,1 +1,0 @@
-# App Ambitos Culturales

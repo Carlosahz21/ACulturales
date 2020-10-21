@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import Template, Context
 from ACulturales.models import *
 from ACulturales.forms import *
-from ACulturales.filters import ParroquiaFilter
+from ACulturales.filters import *
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 import datetime
@@ -14,12 +14,21 @@ def index(request):
     return render(request, "index.html")
 
 #Listar Reporte
+# def listar_datos(request): 
+#     consulta = Agrupacion.objects.select_related("parroquia", "categoria", "ambito")
+#     filtro_prq = ParroquiaFilter(request.GET, queryset=consulta)
+#     consulta = filtro_prq.qs
+#     contexto = {"lista_agrupaciones": consulta, 
+#     			"filtrar_parroquias": filtro_prq}
+#     return render(request, "reportes.html", contexto)
+
+
 def listar_datos(request): 
-    consulta = Agrupacion.objects.select_related("parroquia", "categoria", "ambito")
-    filtro_prq = ParroquiaFilter(request.GET, queryset=consulta.all())
+    consulta = consulta = Agrupacion.objects.select_related("parroquia", "categoria", "ambito")
+    filtro_prq = AgrupacionFilter(request.GET, queryset=consulta)
     consulta = filtro_prq.qs
-    contexto = {"lista_agrupaciones": consulta, 
-    			"filtrar_parroquias": filtro_prq}
+    contexto = {"agrupaciones": consulta, 
+                "filtro": filtro_prq}
     return render(request, "reportes.html", contexto)
 
 

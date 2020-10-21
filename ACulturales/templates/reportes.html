@@ -1,43 +1,16 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Reportes</title>
+  <link rel="icon" type="image/png" href="{% static  'img/icono.png' %}">
 	<link rel="stylesheet" href="{% static  'css/dashboard.css' %}">	
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
-<script>
-function myFunction() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
-</script>
 <body>
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">Actores Culturales</a>
-  <input id="myInput" class="col-sm-6 col-md-8 form-control form-control-dark w-25" type="text" onkeyup="myFunction()" placeholder="Buscar por parroquia...">
-  <ul class="navbar-nav px-3">
-    <!-- <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
-    </li>  -->
-  </ul>
   </nav>
 
 <div class="container-fluid">
@@ -103,22 +76,27 @@ function myFunction() {
 
     <main role="main" id=main class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3>Reportes</h3>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-          <div>
-            <select class="custom-select" id="inputGroupSelect02">
-                    <option selected>Escoja...</option>
-                    {% for categoria in lista_categorias %}
-                    <option value="1">{{ categoria.nombre_categoria }}</option>
-                    {% endfor %}
-          </select>
+        <h3 class="mr-auto p-2">Reportes</h3>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="card card-body">
+            <form class="d-flex" method="get">
+              <div class="col-md-3"><label>{{filtro.form.parroquia.label_tag}}</label>
+              {% render_field filtro.form.parroquia class="custom-select" %}</div>
+              <div class="col-md-3"><label>{{filtro.form.ambito.label_tag}}</label>
+              {% render_field filtro.form.ambito class="custom-select" %}</div>
+              <div class="col-md-3"><label>{{filtro.form.categoria.label_tag}}</label>
+              {% render_field filtro.form.categoria class="custom-select" %}</div>
+              <div class="col-md-2 mt-auto">
+                <button class="btn btn-primary" type="submit">BUSCAR</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+      
       <div class="table-responsive">
         <table id="myTable" class="table">
                 <thead class="thead-dark">
@@ -133,7 +111,7 @@ function myFunction() {
                 </tr>
                 </thead>
                 <tbody>
-                {%for dato in lista_agrupaciones %}
+                {%for dato in agrupaciones %}
                     <tr>
                         <td>{{dato.parroquia.nombre_parroquia}}</td>
                         <td>{{dato.ambito.nombre_ambito}}</td>
@@ -149,6 +127,7 @@ function myFunction() {
             <div id="choose">
             </div> 
       </div>
+
     </main>
   </div>
 </div>

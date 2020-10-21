@@ -1,7 +1,7 @@
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 # Database
@@ -21,6 +21,8 @@ DATABASES = {
 
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/img/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
